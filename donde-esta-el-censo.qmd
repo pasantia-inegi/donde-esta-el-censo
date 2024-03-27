@@ -38,12 +38,65 @@ format:
 [**Abril 2024**]{.big-par .center-justified}
 ---
 
-## Contenidos
+## Contenidos {.medium-par}
 
+- Contexto y objetivo
+- Demostración de la aplicación
+- Estructura de la aplicación
+- <HUGO_COSAS>
+- Flask
+- Gunicorn
+- Nginx
+- Orquestado de contenedores
+- ¿<MAS_HUGO_COSAS>?
+- Desafíos
+- Conclusiones
 
 
 
 #
+
+## Contexto y objetivo
+
+::: incremental
+
+![](imagenes/logo-censo.png){.float-right width=25%  }
+
+- En Chile, entre marzo y junio de 2024 se está ejecutando el Censo de Población y Vivienda.
+
+- Por primera vez es un censo de derecho, durando 3 meses, en vez de un día.
+
+- Esto implica que debió crearse una planificación sobre qué zonas serían censadas en distintos períodos.
+
+- En la práctica, cada comuna (municipio) se divide en 4 ciclos que van siendo encuestados secuencialmente, 
+en la medida que avanza el censo.
+
+- En este contexto, se nos solicitó desarrollar una aplicación que mostrara qué sectores están siendo 
+censados para la comuna seleccionada por el usuario.
+
+:::
+
+
+## Demostración de la aplicación
+
+
+[Veamos cómo funciona la aplicación!](https://dondeestaelcenso.ine.gob.cl)
+
+## Estructura de la aplicación
+
+![](imagenes/diagrama.PNG)
+
+
+
+## HUGO -----------------
+
+
+
+## Flask 
+
+
+#
+
 
 [<img src="imagenes/logo_portada2.png" width="20%"/>]{.center}
 
