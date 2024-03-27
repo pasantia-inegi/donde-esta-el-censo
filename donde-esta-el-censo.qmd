@@ -44,7 +44,7 @@ format:
 - Demostración de la aplicación
 - Estructura de la aplicación
 - <HUGO_COSAS>
-- Flask
+- Flask + Frontend
 - Gunicorn
 - Nginx
 - Orquestado de contenedores
@@ -92,7 +92,42 @@ censados para la comuna seleccionada por el usuario.
 
 
 
-## Flask 
+## Flask + Frontend {.medium-par}
+
+![](imagenes/app_code.png){width=60% .float-right}
+
+::: incremental
+- Como vimos anteriormente, Flask es un _microframework_ para desarrollo web de backend, 
+famoso por ser sencillo, liviano y flexible. Es la base de otros frameworks más complejos como FastAPI.
+
+- Flask funciona como backend de la aplicación, comunicándose con el frontend y manejando
+las lógicas de la aplicación: ploteo, renderizado programático de valores específicos, formulario.
+
+:::
+
+## Flask + Frontend {.medium-par}
+
+::: {.r-stack}
+
+![](imagenes/frontend_app1.png){.fragment .fade-in-then-out .float-right}
+
+![](imagenes/frontend_app2.png){.fragment .fade-in-then-out .float-right}
+
+![](imagenes/frontend_app3.png){.fragment .float-right}
+:::
+
+
+- Esta aplicación requirió una comunicación fluida con el frontend. En particular, entre Python
+y Javascript, lo que se realizó a través de fetch requests, una herramienta relativamente
+reciente nativa de Javascript.
+  
+  - Esto permite que, por ejemplo, Python genere los datos del gráfico, pero Javascript se encargue del
+  ploteo, poniendo la carga sobre los usuarios y no sobre nuestros servidores.
+  
+- Javascript se encarga también de las otras lógicas de la aplicación: funcionamiento de botones,
+autocompletado de texto, tooltips, botón "loading", etc.
+
+## Gunicorn
 
 
 #

@@ -348,7 +348,8 @@
 <li>Demostración de la aplicación</li>
 <li>Estructura de la aplicación</li>
 <li><hugo_cosas></hugo_cosas></li>
-<li>Flask + Gunicorn</li>
+<li>Flask + Frontend</li>
+<li>Gunicorn</li>
 <li>Nginx</li>
 <li>Orquestado de contenedores</li>
 <li>¿<mas_hugo_cosas>?</mas_hugo_cosas></li>
@@ -381,6 +382,34 @@
 <section id="estructura-de-la-aplicación" class="slide level2">
 <h2>Estructura de la aplicación</h2>
 <p><img data-src="imagenes/diagrama.PNG"></p>
+</section>
+<section id="hugo" class="slide level2">
+<h2>HUGO —————–</h2>
+</section>
+<section id="flask-frontend" class="slide level2 medium-par">
+<h2>Flask + Frontend</h2>
+<p><img data-src="imagenes/app_code.png" class="float-right" style="width:60.0%"></p>
+<div>
+<ul>
+<li class="fragment"><p>Como vimos anteriormente, Flask es un <em>microframework</em> para desarrollo web de backend, famoso por ser sencillo, liviano y flexible. Es la base de otros frameworks más complejos como FastAPI.</p></li>
+<li class="fragment"><p>Flask funciona como backend de la aplicación, comunicándose con el frontend y manejando las lógicas de la aplicación: ploteo, renderizado programático de valores específicos, formulario.</p></li>
+</ul>
+</div>
+</section>
+<section id="flask-frontend-1" class="slide level2 medium-par">
+<h2>Flask + Frontend</h2>
+<div class="r-stack">
+<p><img data-src="imagenes/frontend_app1.png" class="fragment fade-in-then-out float-right"></p>
+<p><img data-src="imagenes/frontend_app2.png" class="fragment fade-in-then-out float-right"></p>
+<p><img data-src="imagenes/frontend_app3.png" class="fragment float-right"></p>
+</div>
+<ul>
+<li><p>Esta aplicación requirió una comunicación fluida con el frontend. En particular, entre Python y Javascript, lo que se realizó a través de fetch requests, una herramienta relativamente reciente nativa de Javascript.</p>
+<ul>
+<li>Esto permite que, por ejemplo, Python genere los datos del gráfico, pero Javascript se encargue del ploteo, poniendo la carga sobre los usuarios y no sobre nuestros servidores.</li>
+</ul></li>
+<li><p>Javascript se encarga también de las otras lógicas de la aplicación: funcionamiento de botones, autocompletado de texto, tooltips, botón “loading”, etc.</p></li>
+</ul>
 </section></section>
 <section id="section-2" class="title-slide slide level1 center">
 <h1></h1>
