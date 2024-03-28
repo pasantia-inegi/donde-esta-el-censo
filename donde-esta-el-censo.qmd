@@ -54,7 +54,7 @@ format:
 
 
 
-#
+
 
 ## Contexto y objetivo
 
@@ -83,7 +83,7 @@ censados para la comuna seleccionada por el usuario.
 [Veamos cómo funciona la aplicación!](https://dondeestaelcenso.ine.gob.cl)
 
 
-## Desafíos
+## Desafíos {.medium-par}
 
 ::: incremental
 
@@ -117,6 +117,9 @@ famoso por ser sencillo, liviano y flexible. Es la base de otros frameworks más
 - Flask funciona como backend de la aplicación, comunicándose con el frontend y manejando
 las lógicas de la aplicación: ploteo, renderizado programático de valores específicos, formulario.
 
+- Además, como herramienta de visualización se seleccionó Plotly, al ser Open Source. 
+  - Anteriormente, se hicieron pruebas con Google, pero fueron desestimadas.
+
 :::
 
 ## Flask + Frontend {.medium-par}
@@ -141,7 +144,49 @@ reciente nativa de Javascript.
 - Javascript se encarga también de las otras lógicas de la aplicación: funcionamiento de botones,
 autocompletado de texto, tooltips, botón "loading", etc.
 
-## Gunicorn
+## Gunicorn {.medium-par}
+
+
+``` yaml
+services:
+    flask-censo-1:
+      container_name: flask-censo-1
+      image: flask-censo
+      build: ./flask_app
+      command: gunicorn --workers 20 --bind 0.0.0.0:5000 app:app 
+
+```
+
+- Uno de los desafíos era escalar la aplicación y uno de los elementos que ayuda
+con esto es Green Unicorn.
+
+
+- Es un servidor HTTP Web Server Gateway Interface (WSGI).
+
+- Crea tantos procesos trabajadores como cores hayan disponibles en la CPU, que
+manejan las requests al servidor en paralelo.
+
+- De esta forma gunicorn es quien sirve la aplicación.
+
+![](imagenes/gunicorn-logo.png){ width=40% .float-right}
+
+- Es ampliamente usado en Python por su simpleza, configurabilidad y eficiencia.
+
+## Nginx
+
+- Nginx actúa como parte de nuestra solución para la escalabilidad y la seguridad de la información.
+
+- Actúa como proxy reverso y web server:
+  - Acepta _requests_ de clientes y las distribuye al servidor backend (gunicorn), pasándole
+  medidas de seguridad agregadas en su archivo de configuración. Luego, entrega la respuesta
+  desde el servidor backend al cliente, haciendo parecer que el servidor proxy mismo entregó
+  la respuesta.
+  - Maneja el protocolo HTTP, además de servir los archivos estáticos de la página web.
+  - El balance de la carga es externalizado a un servicio centralizado del INE.
+  
+## Nginx | Seguridad de la información
+
+
 
 
 #

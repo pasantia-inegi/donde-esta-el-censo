@@ -28,6 +28,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="donde-esta-el-censo_files/libs/revealjs/dist/theme/quarto.css">
   <link rel="stylesheet" href="ine_quarto_styles.css">
@@ -346,6 +411,7 @@
 <ul>
 <li>Contexto y objetivo</li>
 <li>Demostración de la aplicación</li>
+<li>Desafíos</li>
 <li>Estructura de la aplicación</li>
 <li><hugo_cosas></hugo_cosas></li>
 <li>Flask + Frontend</li>
@@ -353,14 +419,8 @@
 <li>Nginx</li>
 <li>Orquestado de contenedores</li>
 <li>¿<mas_hugo_cosas>?</mas_hugo_cosas></li>
-<li>Desafíos</li>
 <li>Conclusiones</li>
 </ul>
-</section></section>
-<section>
-<section id="section-1" class="title-slide slide level1 center">
-<h1></h1>
-
 </section>
 <section id="contexto-y-objetivo" class="slide level2">
 <h2>Contexto y objetivo</h2>
@@ -379,6 +439,20 @@
 <h2>Demostración de la aplicación</h2>
 <p><a href="https://dondeestaelcenso.ine.gob.cl">Veamos cómo funciona la aplicación!</a></p>
 </section>
+<section id="desafíos" class="slide level2 medium-par">
+<h2>Desafíos</h2>
+<div>
+<ul>
+<li class="fragment">Principalmente: es una aplicación de uso masivo, lo que implica que esta tiene que:
+<ul>
+<li class="fragment">Ser capaz de escalar.</li>
+<li class="fragment">Ser eficiente.</li>
+<li class="fragment">Tener altas medidas de seguridad.</li>
+</ul></li>
+<li class="fragment">Iremos explorando cómo los solucionamos durante la presentación</li>
+</ul>
+</div>
+</section>
 <section id="estructura-de-la-aplicación" class="slide level2">
 <h2>Estructura de la aplicación</h2>
 <p><img data-src="imagenes/diagrama.PNG"></p>
@@ -393,6 +467,10 @@
 <ul>
 <li class="fragment"><p>Como vimos anteriormente, Flask es un <em>microframework</em> para desarrollo web de backend, famoso por ser sencillo, liviano y flexible. Es la base de otros frameworks más complejos como FastAPI.</p></li>
 <li class="fragment"><p>Flask funciona como backend de la aplicación, comunicándose con el frontend y manejando las lógicas de la aplicación: ploteo, renderizado programático de valores específicos, formulario.</p></li>
+<li class="fragment"><p>Además, como herramienta de visualización se seleccionó Plotly, al ser Open Source.</p>
+<ul>
+<li class="fragment">Anteriormente, se hicieron pruebas con Google, pero fueron desestimadas.</li>
+</ul></li>
 </ul>
 </div>
 </section>
@@ -410,8 +488,26 @@
 </ul></li>
 <li><p>Javascript se encarga también de las otras lógicas de la aplicación: funcionamiento de botones, autocompletado de texto, tooltips, botón “loading”, etc.</p></li>
 </ul>
+</section>
+<section id="gunicorn" class="slide level2 medium-par">
+<h2>Gunicorn</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="at">    </span><span class="fu">flask-censo</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="at">      </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> flask-censo</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">      #context: flask</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="at">      </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./flask_app</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> gunicorn --workers 101  --bind 0.0.0.0:5000 app:app </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>Uno de los desafíos era escalar la aplicación y uno de los elementos que ayuda con esto es Green Unicorn.</p></li>
+<li><p>Es un servidor HTTP Web Server Gateway Interface (WSGI).</p></li>
+<li><p>Crea tantos procesos trabajadores como cores hayan disponibles en la CPU, que manejan las requests al servidor en paralelo.</p></li>
+</ul>
+<p><img data-src="imagenes/gunicorn-logo.png" class="float-right" style="width:40.0%"></p>
+<ul>
+<li>Es ampliamente usado en Python por su simpleza, configurabilidad y eficiencia.</li>
+</ul>
 </section></section>
-<section id="section-2" class="title-slide slide level1 center">
+<section id="section-1" class="title-slide slide level1 center">
 <h1></h1>
 <p><span class="center"><img src="imagenes/logo_portada2.png" width="20%"></span></p>
 <p><span class="big-par center-justified"><strong>Ciencia de datos para el sector público:</strong></span> <span class="big-par center-justified"><strong>Aplicación “Dónde está el censo” y su stack tecnológico</strong></span> <span class="medium-par.center-justified"><strong>Proyecto Ciencia de Datos</strong></span></p>
