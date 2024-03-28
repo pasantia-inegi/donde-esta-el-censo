@@ -42,6 +42,7 @@ format:
 
 - Contexto y objetivo
 - Demostración de la aplicación
+- Desafíos
 - Estructura de la aplicación
 - <HUGO_COSAS>
 - Flask + Frontend
@@ -49,7 +50,6 @@ format:
 - Nginx
 - Orquestado de contenedores
 - ¿<MAS_HUGO_COSAS>?
-- Desafíos
 - Conclusiones
 
 
@@ -81,6 +81,20 @@ censados para la comuna seleccionada por el usuario.
 
 
 [Veamos cómo funciona la aplicación!](https://dondeestaelcenso.ine.gob.cl)
+
+
+## Desafíos
+
+::: incremental
+
+- Principalmente: es una aplicación de uso masivo, lo que implica que esta tiene que:
+  - Ser capaz de escalar.
+  - Ser eficiente.
+  - Tener altas medidas de seguridad.
+- Iremos explorando cómo los solucionamos durante la presentación
+
+:::  
+
 
 ## Estructura de la aplicación
 
