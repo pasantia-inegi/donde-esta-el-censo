@@ -476,36 +476,106 @@
 </section>
 <section id="flask-frontend-1" class="slide level2 medium-par">
 <h2>Flask + Frontend</h2>
-<div class="r-stack">
-<p><img data-src="imagenes/frontend_app1.png" class="fragment fade-in-then-out float-right"></p>
+<div class="r-stack" data-fragment-index="2">
+<p><img data-src="imagenes/frontend_app1.png" class="fragment fade-in-then-out float-right" data-fragment-index="4"></p>
 <p><img data-src="imagenes/frontend_app2.png" class="fragment fade-in-then-out float-right"></p>
 <p><img data-src="imagenes/frontend_app3.png" class="fragment float-right"></p>
 </div>
+<div class="fragment" data-fragment-index="1">
 <ul>
 <li><p>Esta aplicación requirió una comunicación fluida con el frontend. En particular, entre Python y Javascript, lo que se realizó a través de fetch requests, una herramienta relativamente reciente nativa de Javascript.</p>
 <ul>
 <li>Esto permite que, por ejemplo, Python genere los datos del gráfico, pero Javascript se encargue del ploteo, poniendo la carga sobre los usuarios y no sobre nuestros servidores.</li>
 </ul></li>
-<li><p>Javascript se encarga también de las otras lógicas de la aplicación: funcionamiento de botones, autocompletado de texto, tooltips, botón “loading”, etc.</p></li>
 </ul>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li>Javascript se encarga también de las otras lógicas de la aplicación: funcionamiento de botones, autocompletado de texto, tooltips, botón “loading”, etc.</li>
+</ul>
+</div>
 </section>
 <section id="gunicorn" class="slide level2 medium-par">
 <h2>Gunicorn</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="at">    </span><span class="fu">flask-censo</span><span class="kw">:</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="at">      </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> flask-censo</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">      #context: flask</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="at">    </span><span class="fu">flask-censo-1</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="at">      </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> flask-censo-1</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask-censo</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="at">      </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./flask_app</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> gunicorn --workers 101  --bind 0.0.0.0:5000 app:app </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> gunicorn --workers 20 --bind 0.0.0.0:5000 app:app </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div>
 <ul>
-<li><p>Uno de los desafíos era escalar la aplicación y uno de los elementos que ayuda con esto es Green Unicorn.</p></li>
-<li><p>Es un servidor HTTP Web Server Gateway Interface (WSGI).</p></li>
-<li><p>Crea tantos procesos trabajadores como cores hayan disponibles en la CPU, que manejan las requests al servidor en paralelo.</p></li>
+<li class="fragment"><p>Uno de los desafíos era escalar la aplicación y uno de los elementos que ayuda con esto es Green Unicorn.</p></li>
+<li class="fragment"><p>Es un servidor HTTP Web Server Gateway Interface (WSGI).</p></li>
+<li class="fragment"><p>Crea tantos procesos trabajadores como cores hayan disponibles en la CPU, que manejan las requests al servidor en paralelo.</p></li>
+<li class="fragment"><p>De esta forma gunicorn es quien sirve la aplicación.</p></li>
 </ul>
 <p><img data-src="imagenes/gunicorn-logo.png" class="float-right" style="width:40.0%"></p>
 <ul>
-<li>Es ampliamente usado en Python por su simpleza, configurabilidad y eficiencia.</li>
+<li class="fragment">Es ampliamente usado en Python por su simpleza, configurabilidad y eficiencia.</li>
 </ul>
+</div>
+</section>
+<section id="nginx" class="slide level2 medium-par">
+<h2>Nginx</h2>
+<p><img data-src="imagenes/nginx.png"></p>
+<ul>
+<li><p>Nginx actúa como parte de nuestra solución para la escalabilidad y la seguridad de la información.</p></li>
+<li><p>Actúa como proxy reverso y web server:</p>
+<ul>
+<li>Acepta <em>requests</em> de clientes y las distribuye al servidor backend (gunicorn), pasándole medidas de seguridad agregadas en su archivo de configuración. Luego, entrega la respuesta desde el servidor backend al cliente, haciendo parecer que el servidor proxy mismo entregó la respuesta.</li>
+<li>Maneja el protocolo HTTP, además de servir los archivos estáticos de la página web.</li>
+<li>El balance de la carga es externalizado a un servicio centralizado del INE.</li>
+</ul></li>
+</ul>
+</section>
+<section id="nginx-seguridad-de-la-información" class="slide level2 medium-par">
+<h2>Nginx | Seguridad de la información</h2>
+<div class="fragment" data-fragment-index="1">
+<ul>
+<li>Como parte de una aplicación de uso masivo, se nos solicitó que estuviera conforme con medidas de seguridad acorde al estándar de seguridad de OWASP.</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li>Para esto realizamos <em>penetration testing</em> y fuimos solucionando los problemas que fueron presentándose. Entre ellos:</li>
+</ul>
+</div>
+<div class="columns">
+<div class="column small-par" style="width:40%;">
+<div class="fragment" data-fragment-index="3">
+<ul>
+<li>Agregar una <em>Content Security Policy</em>, para evitar ataques Cross-Site Scripting (XSS) y Clickjacking.</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="5">
+<ul>
+<li>Agregar una <em>Strict Transport Security</em>, para forzar el uso de protoclo HTTPS</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="6">
+<ul>
+<li>Eliminar header de servidor, para dificultar atacar vulnerabilidades posibles de nginx</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="7">
+<ul>
+<li>Eliminar todo el CSS y Javascript inline posible, para evitar inyecciones de scripts y estilos.</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="8">
+<ul>
+<li>Agregar cookies Secure, HttpOnly y Samesite con valor “Lax”</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="r-stack">
+<p><img data-src="imagenes/csp.png" class="fragment fade-in-then-out" data-fragment-index="3"></p>
+<p><img data-src="imagenes/sts.png" class="fragment fade-in-then-out" data-fragment-index="5"> <img data-src="imagenes/server_header.png" class="fragment" data-fragment-index="6"></p>
+<p><img data-src="imagenes/cookies.png" class="fragment" data-fragment-index="8"></p>
+</div>
+</div>
+</div>
 </section></section>
 <section id="section-1" class="title-slide slide level1 center">
 <h1></h1>

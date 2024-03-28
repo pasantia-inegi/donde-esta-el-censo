@@ -91,6 +91,8 @@ censados para la comuna seleccionada por el usuario.
   - Ser capaz de escalar.
   - Ser eficiente.
   - Tener altas medidas de seguridad.
+- Además, esta debe poder adaptarse: por su naturaleza, el censo está sujeto a contingencias
+que pueden implicar cambios en la aplicación.
 - Iremos explorando cómo los solucionamos durante la presentación
 
 :::  
@@ -124,25 +126,30 @@ las lógicas de la aplicación: ploteo, renderizado programático de valores esp
 
 ## Flask + Frontend {.medium-par}
 
-::: {.r-stack}
+::: {.r-stack fragment-index=2}
 
-![](imagenes/frontend_app1.png){.fragment .fade-in-then-out .float-right}
+![](imagenes/frontend_app1.png){.fragment fragment-index=4 .fade-in-then-out .float-right}
 
 ![](imagenes/frontend_app2.png){.fragment .fade-in-then-out .float-right}
 
 ![](imagenes/frontend_app3.png){.fragment .float-right}
 :::
 
-
+::: {.fragment fragment-index=1 }
 - Esta aplicación requirió una comunicación fluida con el frontend. En particular, entre Python
 y Javascript, lo que se realizó a través de fetch requests, una herramienta relativamente
 reciente nativa de Javascript.
   
   - Esto permite que, por ejemplo, Python genere los datos del gráfico, pero Javascript se encargue del
   ploteo, poniendo la carga sobre los usuarios y no sobre nuestros servidores.
-  
+
+:::  
+
+::: {.fragment fragment-index=2 }  
 - Javascript se encarga también de las otras lógicas de la aplicación: funcionamiento de botones,
 autocompletado de texto, tooltips, botón "loading", etc.
+
+:::
 
 ## Gunicorn {.medium-par}
 
@@ -157,6 +164,7 @@ services:
 
 ```
 
+::: incremental
 - Uno de los desafíos era escalar la aplicación y uno de los elementos que ayuda
 con esto es Green Unicorn.
 
@@ -172,7 +180,11 @@ manejan las requests al servidor en paralelo.
 
 - Es ampliamente usado en Python por su simpleza, configurabilidad y eficiencia.
 
-## Nginx
+:::
+
+## Nginx {.medium-par}
+
+![](imagenes/nginx.png)
 
 - Nginx actúa como parte de nuestra solución para la escalabilidad y la seguridad de la información.
 
@@ -184,10 +196,113 @@ manejan las requests al servidor en paralelo.
   - Maneja el protocolo HTTP, además de servir los archivos estáticos de la página web.
   - El balance de la carga es externalizado a un servicio centralizado del INE.
   
-## Nginx | Seguridad de la información
+## Nginx | Seguridad de la información {.medium-par}
+
+::: {.fragment fragment-index=1} 
+- Como parte de una aplicación de uso masivo, se nos solicitó que estuviera conforme
+con medidas de seguridad acorde al estándar de seguridad de OWASP.
+:::
+
+
+::: {.fragment fragment-index=2} 
+- Para esto realizamos _penetration testing_ y fuimos solucionando los problemas que
+fueron presentándose. Entre ellos:
+:::
+
+::::: columns
+
+
+:::: {.column width="40%" .small-par}
+
+::: {.fragment fragment-index=3} 
+- Agregar una _Content Security Policy_, para evitar ataques Cross-Site Scripting (XSS) y Clickjacking.
+  
+:::
+  
+::: {.fragment fragment-index=5} 
+  - Agregar una _Strict Transport Security_, para forzar el uso de protoclo HTTPS
+  
+:::
+
+::: {.fragment fragment-index=6} 
+  - Eliminar header de servidor, para dificultar atacar vulnerabilidades posibles de nginx
+  
+:::
+
+::: {.fragment fragment-index=7} 
+  - Eliminar todo el CSS y Javascript inline posible, para evitar inyecciones de scripts y estilos.
+  
+:::
+
+::: {.fragment fragment-index=8} 
+  - Agregar cookies Secure, HttpOnly y Samesite con valor "Lax"
+  
+:::
+
+::: {.fragment fragment-index=9} 
+  - Etc
+  
+:::
+
+::::
+
+:::: {.column width="50%"}
+
+::: r-stack
+
+
+![](imagenes/csp.png){.fragment fragment-index=3 .fade-in-then-out}
+
+![](imagenes/sts.png){.fragment fragment-index=5 .fade-in-then-out}
+![](imagenes/server_header.png){.fragment fragment-index=6 .fade-in-then-out}
+
+![](imagenes/cookies.png){.fragment fragment-index=8}
+
+:::
 
 
 
+::::
+
+
+
+:::::
+
+
+::: notes
+
+- Cookie httponly: no se puede acceder a cookie desde javascript
+- cookie secure: cookie solo será enviada desde requests https
+- Cookie samesimte: Evita ataques CSRF (Cross-site request forgery)
+
+:::
+
+## Orquestado de contenedores
+
+- El orquestado de los contenedores requiere levantar 3 los servicios mencionados en el diagrama
+- Se optó como estrategia por levantar 3 instancias de la aplicación de flask, que son distribuidas
+por el balanceador de carga en la medida que llegan requests.
+- Fuera de esto, la implementación es relavitamente sencilla: se montan volúmenes, se utilizan variablees
+de ambiente y se aprovechan imágenes pre-existentes.
+
+[Insertar imagen docker-compose.yml]
+
+## Conclusiones
+
+::: incremental
+
+- Gracias al aprovechamiento de las tecnologías Open Source disponibles, fue posible
+crear una aplicación de forma colaboorativa, que pudiera adaptarse a los desafíos
+que esta presentaba:
+  - Postgis aportó en la eficiencia y adaptabilidad de la aplicación.
+  - Flask y Python permiten contar con un código fácil de mantener y adaptar.
+  - Gunicorn permite escalabilidad.
+  - Nginx aporta con medidas de seguridad y escalabilidad
+
+- Todo esto permite que se levante una aplicación acorde a los objetivos y que
+ha sido de gran utilidad a la ciudadanía.
+
+:::
 
 #
 
