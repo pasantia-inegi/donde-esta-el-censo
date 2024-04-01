@@ -1,6 +1,6 @@
 ---
-# title: "modelo de innominación de documento"
-# author: "Abril 2024"
+title: "aaa"
+author: "bbb"
 format:
   revealjs:
     auto-stretch: false
@@ -15,18 +15,8 @@ format:
 
 #
 
-
-<!---
-# TODO: this does not work
- ![](imagenes/logo_portada2.png){.center style="width: 20%;"}   
---->
-
 []{.linea-superior} 
 []{.linea-inferior} 
-
-<!---
- <img src="imagenes/logo_portada2.png" style="width: 20%"/>  
---->
 
 <img src="imagenes/logo_portada2.png" width="20%"/>  
 
@@ -36,23 +26,22 @@ format:
 [**Proyecto Ciencia de Datos**]{.medium-par.center-justified}
 
 [**Abril 2024**]{.big-par .center-justified}
----
 
-## Contenidos {.medium-par}
+
+
+## Contenidos
 
 - Contexto y objetivo
 - Demostración de la aplicación
 - Desafíos
 - Estructura de la aplicación
-- <HUGO_COSAS>
+- Base de Datos: PostGIS
 - Flask + Frontend
 - Gunicorn
 - Nginx
 - Orquestado de contenedores
 - ¿<MAS_HUGO_COSAS>?
 - Conclusiones
-
-
 
 
 
@@ -104,7 +93,158 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## HUGO -----------------
+## Base de Datos: PostGIS {.medium-par}
+
+::: incremental
+- Extiende las capacidades de una base de datos relacional PostgreSQL, agregando soporte para almacenamiento, indexado y consulta a datos geospaciales.
+
+- Principales características:
+  - Almacenamiento: puntos, líneas, polígonos y multi-geometrías, en 2D y 3D.
+  - Indexado: permite rápida consulta y respuesta.
+  - Funciones y Procesamiento geométrico: medición de distancias y áreas, intersecciones, buffers, simplificación, geocoding, etc.
+
+- Para optimizar las consultas a la BBDD, creamos tres tablas que contienen diferentes datos geospaciales preprocesados con propósitos definidos en función de la operación de la aplicación.
+
+- Esto permite que la BBDD sea estática: al ser consultada por la aplicación sólo retorna lo necesario, pero no realiza procesamientos demandantes.
+
+:::
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+::: incremental
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta **shp2pgsql**.
+  - [https://postgis.net/docs/using_postgis_dbmanagement.html](https://postgis.net/docs/using_postgis_dbmanagement.html)
+
+:::
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta **shp2pgsql**.
+  - [https://postgis.net/docs/using_postgis_dbmanagement.html](https://postgis.net/docs/using_postgis_dbmanagement.html)
+
+![](imagenes/postgis_shp2pgsql.png){width="120%"}
+
+::: {.small-par-2}
+
+```{python}
+#| echo: TRUE
+#| eval: FALSE
+
+# convert geodataframe to shape
+gdf_db.to_file(path_shp)
+
+# create script with sql inserts that populates table perimeters_arc
+cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc > ../../postgis/sql/init/30_2_append_perimeters_arc.sql"
+res = subprocess.call(cmd, shell=True)
+
+# create script with sql inserts that populates table perimeters_arc_ciclo
+cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc_ciclo > ../../postgis/sql/init/31_2_append_perimeters_arc_ciclo.sql"
+res = subprocess.call(cmd, shell=True)
+
+# create script with sql inserts that populates table comunas
+cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.comunas > 40_2_append_comunas.sql"
+res = subprocess.call(cmd, shell=True)
+```
+
+:::
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta **shp2pgsql**.
+  - Ejemplo de script **40_2_append_comunas.sql**:
+
+![](imagenes/postgis_query_insert_table_comunas.png){width="100%"}
+
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta **shp2pgsql**.
+  - como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta **shp2pgsql**.
+  - como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)
+
+TODO: figure with diagram of processing workflow
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+::: incremental
+- Tabla 1: **comunas**
+  - Contiene 354 filas con información general de cada comuna del país.
+  - Coordenadas de centroides de cada sector comunal (urbana, rural, aldea).
+  - Niveles de zoom precalculados en base al área de cada sector, usados para centrar el mapa mostrado en la aplicación.
+  - Columna **geometry** contiene perímetros de comunas (en formato binarias), usados para dibujar el contorno comunal mostrado en la aplicación.
+:::
+
+![](imagenes/postgis_table_comunas.png){width="100%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+::: incremental
+- Tabla 2: **perimeters_arc**
+  - Contiene X filas, con múltiples filas por cada comuna. 
+  - Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando por ARC y ciclo censal.
+  - Esta es nuestra **Optimización I**, que permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe plotear. 
+    - Todo esto alineado a la planificación del censo, que es a nivel de ciclo.
+:::
+
+![](imagenes/postgis_table_perimeters_arc.png){width="100%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+::: incremental
+- Tabla 3: **perimeters_arc_ciclo**
+  - Contiene X filas, una fila por ciclo y por comuna, es decir, cuatro filas por cada comuna (*idealmente*). 
+  - Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando todos los ARCs de una comuna para cada ciclo censal.
+  - Esta es nuestra **Optimización II**, que se aplica a comunas con un gran número de ARCs (>300). Esto permite reducir aún más la latencia de la aplicación al consultar la BBDD y plotear las geometrías. 
+    - Nació como medida de contención ante la alta demanda de la aplicación.
+:::
+
+![](imagenes/postgis_table_perimeters_arc_ciclo.png){width="100%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- **Optimización I**: geometrías que contienen multi-polígonos obtenidos agrupando por ARC y ciclo censal.
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- **Optimización I**: geometrías que contienen multi-polígonos obtenidos agrupando por ARC y ciclo censal.
+
+TODO: image with an example of original and simplified shapes.
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- **Optimización II**: geometrías que contienen multi-polígonos obtenidos agrupando todos los ARCs de una comuna en cada ciclo censal.
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- **Optimización II**: geometrías que contienen multi-polígonos obtenidos agrupando todos los ARCs de una comuna en cada ciclo censal.
+
+TODO: image with an example of original and simplified shapes.
 
 
 
