@@ -762,12 +762,12 @@ Proyecto Ciencia de Datos
 </section>
 <section id="orquestado-de-contenedores" class="slide level2 medium-par">
 <h2>Orquestado de contenedores</h2>
+<p><img data-src="imagenes/docker-compose.png" class="float-right" style="width:45.0%"></p>
 <ul>
 <li>El orquestado de los contenedores requiere levantar 3 los servicios mencionados en el diagrama</li>
 <li>Originalmente, fue utilizada una sola instancia de flask-gunicorn, sin embargo, esto resultó no ser del todo eficiente, por lo que finalmente se levantan 3 instancias, que reciben las requests en la medida que van llegando desde <code>nginx</code> a través de un sistema de reparto <em>round robin</em>.</li>
-<li>Fuera de esto, la implementación es relavitamente sencilla: se montan volúmenes, se utilizan variablees de ambiente y se aprovechan imágenes pre-existentes.</li>
+<li>Fuera de esto, la implementación es relativamente sencilla: se montan volúmenes, se utilizan variablees de ambiente y se aprovechan imágenes pre-existentes.</li>
 </ul>
-<p>[Insertar imagen docker-compose.yml]</p>
 </section>
 <section id="conclusiones" class="slide level2">
 <h2>Conclusiones</h2>

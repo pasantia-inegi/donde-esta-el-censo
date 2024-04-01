@@ -417,6 +417,8 @@ fueron presentándose. Entre ellos:
 
 ## Orquestado de contenedores {.medium-par}
 
+![](imagenes/docker-compose.png){.float-right width=45%}
+
 - El orquestado de los contenedores requiere levantar 3 los servicios mencionados en el diagrama
 - Originalmente, fue utilizada una sola instancia de flask-gunicorn, sin embargo, esto resultó no ser
 del todo eficiente, por lo que finalmente se levantan 3 instancias, que reciben las requests en la medida
@@ -424,7 +426,7 @@ que van llegando desde `nginx` a través de un sistema de reparto _round robin_.
 - Fuera de esto, la implementación es relativamente sencilla: se montan volúmenes, se utilizan variablees
 de ambiente y se aprovechan imágenes pre-existentes.
 
-[Insertar imagen docker-compose.yml]
+
 
 ## Conclusiones
 
