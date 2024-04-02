@@ -6,11 +6,13 @@ format:
     slide-number: true
     scrollable: true
     preview-links: auto
+    page-layout: custom
     logo: imagenes/logo_portada2.png
     css: ine_quarto_styles.css
     chalkboard: 
       boardmarker-width: 20
       buttons: false
+engine: knitr
 ---
 
 
@@ -465,7 +467,7 @@ de ambiente y se aprovechan imágenes pre-existentes.
 
 
 
-## Conclusiones
+## Conclusiones {.medium-par}
 
 ::: incremental
 
