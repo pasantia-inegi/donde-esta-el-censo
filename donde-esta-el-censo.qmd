@@ -94,6 +94,16 @@ que pueden implicar cambios en la aplicación.
 
 ## Base de Datos: PostGIS {.medium-par}
 
+- TODO: imagen con ejemplo de MANZANAS, ARC
+
+- TODO: quizás unir con siguiente slide
+
+- Como lidiamos con geometrías geospaciales, necesitamos una base de datos optimizada para almacenar ese tipo de datos...
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
 ::: incremental
 - Extiende las capacidades de una base de datos relacional PostgreSQL, agregando soporte para almacenamiento, indexado y consulta a datos geospaciales.
 
