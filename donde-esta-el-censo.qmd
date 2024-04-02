@@ -1,6 +1,4 @@
 ---
-title: "Aplicación dónde está el Censo"
-author: "Proyecto Ciencia de Datos"
 format:
   revealjs:
     auto-stretch: false
@@ -10,8 +8,11 @@ format:
     preview-links: auto
     logo: imagenes/logo_portada2.png
     css: ine_quarto_styles.css
-    # footer: <https://quarto.org>
+    chalkboard: 
+      boardmarker-width: 20
+      buttons: false
 ---
+
 
 #
 
@@ -24,7 +25,6 @@ format:
 [**Ciencia de datos para el sector público:**]{.big-par .center-justified}
 [**Aplicación "Dónde está el censo" y su stack tecnológico**]{.big-par .center-justified}
 [**Proyecto Ciencia de Datos**]{.medium-par.center-justified}
-
 [**Abril 2024**]{.big-par .center-justified}
 
 
@@ -41,7 +41,6 @@ format:
 - Nginx
 - Orquestado de contenedores
 - Conclusiones
-
 
 
 ## Contexto y objetivo
@@ -132,14 +131,15 @@ que pueden implicar cambios en la aplicación.
 
 ## Base de Datos: PostGIS {.medium-par}
 
-
 - La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
-  - [https://postgis.net/docs/using_postgis_dbmanagement.html](https://postgis.net/docs/using_postgis_dbmanagement.html)
+
+- [https://postgis.net/docs/using_postgis_dbmanagement.html](https://postgis.net/docs/using_postgis_dbmanagement.html)
 
 ![](imagenes/postgis_shp2pgsql.png){width="120%"}
 
 ::: {.small-par}
-```{python}
+
+```{r}
 #| echo: TRUE
 #| eval: FALSE
 
@@ -158,6 +158,7 @@ res = subprocess.call(cmd, shell=True)
 cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.comunas > 40_2_append_comunas.sql"
 res = subprocess.call(cmd, shell=True)
 ```
+
 :::
 
 
@@ -495,7 +496,6 @@ ha sido de gran utilidad a la ciudadanía.
 [**Ciencia de datos para el sector público:**]{.big-par .center-justified}
 [**Aplicación "Dónde está el censo" y su stack tecnológico**]{.big-par .center-justified}
 [**Proyecto Ciencia de Datos**]{.medium-par.center-justified}
-
 [**Abril 2024**]{.big-par .center-justified}
 
 

@@ -10,8 +10,7 @@
 <link href="donde-esta-el-censo_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.3.450">
 
-  <meta name="author" content="Proyecto Ciencia de Datos">
-  <title>Aplicación dónde está el Censo</title>
+  <title>donde-esta-el-censo</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -100,6 +99,8 @@
   <link href="donde-esta-el-censo_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="donde-esta-el-censo_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="donde-esta-el-censo_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="donde-esta-el-censo_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="donde-esta-el-censo_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="donde-esta-el-censo_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
@@ -391,25 +392,13 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Aplicación dónde está el Censo</h1>
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Proyecto Ciencia de Datos 
-</div>
-</div>
-</div>
-
-</section>
 <section>
 <section id="section" class="title-slide slide level1 center">
 <h1></h1>
 <p><span class="linea-superior"></span> <span class="linea-inferior"></span></p>
 <p><img src="imagenes/logo_portada2.png" width="20%"></p>
-<p><span class="big-par center-justified"><strong>Ciencia de datos para el sector público:</strong></span> <span class="big-par center-justified"><strong>Aplicación “Dónde está el censo” y su stack tecnológico</strong></span> <span class="medium-par.center-justified"><strong>Proyecto Ciencia de Datos</strong></span></p>
-<p><span class="big-par center-justified"><strong>Abril 2024</strong></span></p>
+<p><span class="big-par center-justified"><strong>Ciencia de datos para el sector público:</strong></span> <span class="big-par center-justified"><strong>Aplicación “Dónde está el censo” y su stack tecnológico</strong></span> <span class="medium-par.center-justified"><strong>Proyecto Ciencia de Datos</strong></span> <span class="big-par center-justified"><strong>Abril 2024</strong></span></p>
 </section>
 <section id="contenidos" class="slide level2">
 <h2>Contenidos</h2>
@@ -500,28 +489,26 @@ Proyecto Ciencia de Datos
 <section id="base-de-datos-postgis-3" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
-<ul>
-<li><a href="https://postgis.net/docs/using_postgis_dbmanagement.html">https://postgis.net/docs/using_postgis_dbmanagement.html</a></li>
-</ul></li>
+<li><p>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.</p></li>
+<li><p><a href="https://postgis.net/docs/using_postgis_dbmanagement.html">https://postgis.net/docs/using_postgis_dbmanagement.html</a></p></li>
 </ul>
 <p><img data-src="imagenes/postgis_shp2pgsql.png" style="width:120.0%"></p>
 <div class="small-par">
-<div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># convert geodataframe to shape</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>gdf_db.to_file(path_shp)</span>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># convert geodataframe to shape</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">gdf_db.to_file</span>(path_shp)</span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="co"># create script with sql inserts that populates table perimeters_arc</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>cmd <span class="op">=</span> <span class="ss">f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I </span><span class="sc">{</span>path_shp<span class="sc">}</span><span class="ss"> public.perimeters_arc &gt; ../../postgis/sql/init/30_2_append_perimeters_arc.sql"</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>res <span class="op">=</span> subprocess.call(cmd, shell<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>cmd <span class="ot">=</span> f<span class="st">"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc &gt; ../../postgis/sql/init/30_2_append_perimeters_arc.sql"</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>res <span class="ot">=</span> <span class="fu">subprocess.call</span>(cmd, <span class="at">shell=</span>True)</span>
 <span id="cb1-7"><a href="#cb1-7"></a></span>
 <span id="cb1-8"><a href="#cb1-8"></a><span class="co"># create script with sql inserts that populates table perimeters_arc_ciclo</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>cmd <span class="op">=</span> <span class="ss">f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I </span><span class="sc">{</span>path_shp<span class="sc">}</span><span class="ss"> public.perimeters_arc_ciclo &gt; ../../postgis/sql/init/31_2_append_perimeters_arc_ciclo.sql"</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>res <span class="op">=</span> subprocess.call(cmd, shell<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>cmd <span class="ot">=</span> f<span class="st">"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc_ciclo &gt; ../../postgis/sql/init/31_2_append_perimeters_arc_ciclo.sql"</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>res <span class="ot">=</span> <span class="fu">subprocess.call</span>(cmd, <span class="at">shell=</span>True)</span>
 <span id="cb1-11"><a href="#cb1-11"></a></span>
 <span id="cb1-12"><a href="#cb1-12"></a><span class="co"># create script with sql inserts that populates table comunas</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a>cmd <span class="op">=</span> <span class="ss">f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I </span><span class="sc">{</span>path_shp<span class="sc">}</span><span class="ss"> public.comunas &gt; 40_2_append_comunas.sql"</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>res <span class="op">=</span> subprocess.call(cmd, shell<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13"></a>cmd <span class="ot">=</span> f<span class="st">"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.comunas &gt; 40_2_append_comunas.sql"</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>res <span class="ot">=</span> <span class="fu">subprocess.call</span>(cmd, <span class="at">shell=</span>True)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -835,8 +822,7 @@ Proyecto Ciencia de Datos
 <section id="section-1" class="title-slide slide level1 center">
 <h1></h1>
 <p><span class="center"><img src="imagenes/logo_portada2.png" width="20%"></span></p>
-<p><span class="big-par center-justified"><strong>Ciencia de datos para el sector público:</strong></span> <span class="big-par center-justified"><strong>Aplicación “Dónde está el censo” y su stack tecnológico</strong></span> <span class="medium-par.center-justified"><strong>Proyecto Ciencia de Datos</strong></span></p>
-<p><span class="big-par center-justified"><strong>Abril 2024</strong></span></p>
+<p><span class="big-par center-justified"><strong>Ciencia de datos para el sector público:</strong></span> <span class="big-par center-justified"><strong>Aplicación “Dónde está el censo” y su stack tecnológico</strong></span> <span class="medium-par.center-justified"><strong>Proyecto Ciencia de Datos</strong></span> <span class="big-par center-justified"><strong>Abril 2024</strong></span></p>
 <p><span class="linea-superior"></span> <span class="linea-inferior"></span></p>
 <p><img src="imagenes/logo_portada2.png" class="slide-logo"></p>
 <div class="footer footer-default">
@@ -853,6 +839,7 @@ Proyecto Ciencia de Datos
   <script src="donde-esta-el-censo_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="donde-esta-el-censo_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="donde-esta-el-censo_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="donde-esta-el-censo_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="donde-esta-el-censo_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -874,7 +861,8 @@ Proyecto Ciencia de Datos
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":false,"boardmarkerWidth":20},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1045,7 +1033,7 @@ Proyecto Ciencia de Datos
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,
@@ -1054,6 +1042,44 @@ Proyecto Ciencia de Datos
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
