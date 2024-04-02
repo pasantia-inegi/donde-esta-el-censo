@@ -482,7 +482,7 @@ Proyecto Ciencia de Datos
 <h2>Base de Datos: PostGIS</h2>
 <div>
 <ul>
-<li class="fragment">La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta <strong>shp2pgsql</strong>.
+<li class="fragment">La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
 <ul>
 <li class="fragment"><a href="https://postgis.net/docs/using_postgis_dbmanagement.html">https://postgis.net/docs/using_postgis_dbmanagement.html</a></li>
 </ul></li>
@@ -492,13 +492,13 @@ Proyecto Ciencia de Datos
 <section id="base-de-datos-postgis-2" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta <strong>shp2pgsql</strong>.
+<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
 <ul>
 <li><a href="https://postgis.net/docs/using_postgis_dbmanagement.html">https://postgis.net/docs/using_postgis_dbmanagement.html</a></li>
 </ul></li>
 </ul>
 <p><img data-src="imagenes/postgis_shp2pgsql.png" style="width:120.0%"></p>
-<div class="small-par-2">
+<div class="small-par">
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># convert geodataframe to shape</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>gdf_db.to_file(path_shp)</span>
@@ -520,7 +520,7 @@ Proyecto Ciencia de Datos
 <section id="base-de-datos-postgis-3" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta <strong>shp2pgsql</strong>.
+<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
 <ul>
 <li>Ejemplo de script <strong>40_2_append_comunas.sql</strong>:</li>
 </ul></li>
@@ -530,7 +530,7 @@ Proyecto Ciencia de Datos
 <section id="base-de-datos-postgis-4" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta <strong>shp2pgsql</strong>.
+<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
 <ul>
 <li>como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)</li>
 </ul></li>
@@ -539,7 +539,7 @@ Proyecto Ciencia de Datos
 <section id="base-de-datos-postgis-5" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta <strong>shp2pgsql</strong>.
+<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
 <ul>
 <li>como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)</li>
 </ul></li>
@@ -559,15 +559,35 @@ Proyecto Ciencia de Datos
 </ul></li>
 </ul>
 </div>
-<p><img data-src="imagenes/postgis_table_comunas.png" style="width:100.0%"></p>
+<p><img data-src="imagenes/postgis_table_comunas_2.png" style="width:100.0%"></p>
 </section>
 <section id="base-de-datos-postgis-7" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Tabla 1: <strong>comunas</strong>
+<ul>
+<li>Ejemplo: comuna Concepción.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_01_1.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-8" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Tabla 1: <strong>comunas</strong>
+<ul>
+<li>Ejemplo: comuna Concepción.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_01_2.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-9" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <div>
 <ul>
 <li class="fragment">Tabla 2: <strong>perimeters_arc</strong>
 <ul>
-<li class="fragment">Contiene X filas, con múltiples filas por cada comuna.</li>
+<li class="fragment">Contiene 44,835 filas, con múltiples filas por cada comuna.</li>
 <li class="fragment">Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando por ARC y ciclo censal.</li>
 <li class="fragment">Esta es nuestra <strong>Optimización I</strong>, que permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe plotear.
 <ul>
@@ -578,13 +598,33 @@ Proyecto Ciencia de Datos
 </div>
 <p><img data-src="imagenes/postgis_table_perimeters_arc.png" style="width:100.0%"></p>
 </section>
-<section id="base-de-datos-postgis-8" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-10" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Tabla 2: <strong>perimeters_arc</strong>
+<ul>
+<li>Ejemplo: comuna Concepción.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_02_1.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-11" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Tabla 2: <strong>perimeters_arc</strong>
+<ul>
+<li>Ejemplo: comuna Concepción.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_02_2.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-12" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <div>
 <ul>
 <li class="fragment">Tabla 3: <strong>perimeters_arc_ciclo</strong>
 <ul>
-<li class="fragment">Contiene X filas, una fila por ciclo y por comuna, es decir, cuatro filas por cada comuna (<em>idealmente</em>).</li>
+<li class="fragment">Contiene 136 filas, una fila por ciclo y por comuna, es decir, cuatro filas por cada comuna.</li>
 <li class="fragment">Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando todos los ARCs de una comuna para cada ciclo censal.</li>
 <li class="fragment">Esta es nuestra <strong>Optimización II</strong>, que se aplica a comunas con un gran número de ARCs (&gt;300). Esto permite reducir aún más la latencia de la aplicación al consultar la BBDD y plotear las geometrías.
 <ul>
@@ -595,31 +635,25 @@ Proyecto Ciencia de Datos
 </div>
 <p><img data-src="imagenes/postgis_table_perimeters_arc_ciclo.png" style="width:100.0%"></p>
 </section>
-<section id="base-de-datos-postgis-9" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-13" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
-<li><strong>Optimización I</strong>: geometrías que contienen multi-polígonos obtenidos agrupando por ARC y ciclo censal.</li>
+<li>Tabla 3: <strong>perimeters_arc_ciclo</strong>
+<ul>
+<li>Ejemplo: comuna Concepción.</li>
+</ul></li>
 </ul>
+<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_03_1.png" style="width:100.0%"></p>
 </section>
-<section id="base-de-datos-postgis-10" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-14" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
-<li><strong>Optimización I</strong>: geometrías que contienen multi-polígonos obtenidos agrupando por ARC y ciclo censal.</li>
-</ul>
-<p>TODO: image with an example of original and simplified shapes.</p>
-</section>
-<section id="base-de-datos-postgis-11" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
+<li>Tabla 3: <strong>perimeters_arc_ciclo</strong>
 <ul>
-<li><strong>Optimización II</strong>: geometrías que contienen multi-polígonos obtenidos agrupando todos los ARCs de una comuna en cada ciclo censal.</li>
+<li>Ejemplo: comuna Concepción.</li>
+</ul></li>
 </ul>
-</section>
-<section id="base-de-datos-postgis-12" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li><strong>Optimización II</strong>: geometrías que contienen multi-polígonos obtenidos agrupando todos los ARCs de una comuna en cada ciclo censal.</li>
-</ul>
-<p>TODO: image with an example of original and simplified shapes.</p>
+<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_03_2.png" style="width:100.0%"></p>
 </section>
 <section id="flask-frontend" class="slide level2 medium-par">
 <h2>Flask + Frontend</h2>
