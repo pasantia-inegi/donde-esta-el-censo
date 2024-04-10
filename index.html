@@ -8,7 +8,7 @@
 <link href="donde-esta-el-censo_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="donde-esta-el-censo_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="donde-esta-el-censo_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.433">
+  <meta name="generator" content="quarto-1.3.450">
 
   <title>donde-esta-el-censo</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -453,13 +453,61 @@
 </section>
 <section id="base-de-datos-postgis" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
+<div>
 <ul>
-<li><p>TODO: imagen con ejemplo de MANZANAS, ARC</p></li>
-<li><p>TODO: quizás unir con siguiente slide</p></li>
-<li><p>Como lidiamos con geometrías geospaciales, necesitamos una base de datos optimizada para almacenar ese tipo de datos…</p></li>
+<li class="fragment">Cada comuna se divide en 4 ciclos censales.
+<ul>
+<li class="fragment">Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.</li>
+<li class="fragment">Veamos cómo se construye cada ciclo.</li>
+</ul></li>
 </ul>
+</div>
 </section>
 <section id="base-de-datos-postgis-1" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Cada comuna se divide en 4 ciclos censales.
+<ul>
+<li>Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.</li>
+<li>Veamos cómo se construye cada ciclo.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_arc_manzent_pres_01.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-2" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Cada comuna se divide en 4 ciclos censales.
+<ul>
+<li>Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.</li>
+<li>Veamos cómo se construye cada ciclo.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_arc_manzent_pres_02.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-3" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Cada comuna se divide en 4 ciclos censales.
+<ul>
+<li>Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.</li>
+<li>Veamos cómo se construye cada ciclo.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_arc_manzent_pres_03.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-4" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<ul>
+<li>Cada comuna se divide en 4 ciclos censales.
+<ul>
+<li>Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.</li>
+<li>Veamos cómo se construye cada ciclo.</li>
+</ul></li>
+</ul>
+<p><img data-src="imagenes/ejemplo_arc_manzent_pres_04.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-5" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <div>
 <ul>
@@ -474,74 +522,67 @@
 <li class="fragment"><p>Esto permite que la BBDD sea estática: al ser consultada por la aplicación sólo retorna lo necesario, pero no realiza procesamientos demandantes.</p></li>
 </ul>
 </div>
-</section>
-<section id="base-de-datos-postgis-2" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<div>
-<ul>
-<li class="fragment">La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
-<ul>
-<li class="fragment"><a href="https://postgis.net/docs/using_postgis_dbmanagement.html">https://postgis.net/docs/using_postgis_dbmanagement.html</a></li>
-</ul></li>
-</ul>
-</div>
-</section>
-<section id="base-de-datos-postgis-3" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li><p>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.</p></li>
-<li><p><a href="https://postgis.net/docs/using_postgis_dbmanagement.html">https://postgis.net/docs/using_postgis_dbmanagement.html</a></p></li>
-</ul>
-<p><img data-src="imagenes/postgis_shp2pgsql.png" style="width:120.0%"></p>
-<div class="small-par">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># convert geodataframe to shape</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">gdf_db.to_file</span>(path_shp)</span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># create script with sql inserts that populates table perimeters_arc</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>cmd <span class="ot">=</span> f<span class="st">"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc &gt; ../../postgis/sql/init/30_2_append_perimeters_arc.sql"</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>res <span class="ot">=</span> <span class="fu">subprocess.call</span>(cmd, <span class="at">shell=</span>True)</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># create script with sql inserts that populates table perimeters_arc_ciclo</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>cmd <span class="ot">=</span> f<span class="st">"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc_ciclo &gt; ../../postgis/sql/init/31_2_append_perimeters_arc_ciclo.sql"</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>res <span class="ot">=</span> <span class="fu">subprocess.call</span>(cmd, <span class="at">shell=</span>True)</span>
-<span id="cb1-11"><a href="#cb1-11"></a></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co"># create script with sql inserts that populates table comunas</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a>cmd <span class="ot">=</span> f<span class="st">"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.comunas &gt; 40_2_append_comunas.sql"</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>res <span class="ot">=</span> <span class="fu">subprocess.call</span>(cmd, <span class="at">shell=</span>True)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</section>
-<section id="base-de-datos-postgis-4" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
-<ul>
-<li>Ejemplo de script <strong>40_2_append_comunas.sql</strong>:</li>
-</ul></li>
-</ul>
-<p><img data-src="imagenes/postgis_query_insert_table_comunas.png" style="width:100.0%"></p>
-</section>
-<section id="base-de-datos-postgis-5" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
-<ul>
-<li>como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)</li>
-</ul></li>
-</ul>
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+::: incremental
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
+  - [https://postgis.net/docs/using_postgis_dbmanagement.html](https://postgis.net/docs/using_postgis_dbmanagement.html)
+
+::: -->
+
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
+
+- [https://postgis.net/docs/using_postgis_dbmanagement.html](https://postgis.net/docs/using_postgis_dbmanagement.html)
+
+![](imagenes/postgis_shp2pgsql.png){width="120%"}
+
+::: {.small-par}
+
+
+::: {.cell}
+
+```{.r .cell-code}
+# convert geodataframe to shape
+gdf_db.to_file(path_shp)
+
+# create script with sql inserts that populates table perimeters_arc
+cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc > ../../postgis/sql/init/30_2_append_perimeters_arc.sql"
+res = subprocess.call(cmd, shell=True)
+
+# create script with sql inserts that populates table perimeters_arc_ciclo
+cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.perimeters_arc_ciclo > ../../postgis/sql/init/31_2_append_perimeters_arc_ciclo.sql"
+res = subprocess.call(cmd, shell=True)
+
+# create script with sql inserts that populates table comunas
+cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.comunas > 40_2_append_comunas.sql"
+res = subprocess.call(cmd, shell=True)
+```
+:::
+
+
+::: -->
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
+  - Ejemplo de script **40_2_append_comunas.sql**:
+
+![](imagenes/postgis_query_insert_table_comunas.png){width="100%"} -->
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
+  - como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
+  - como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)
+
+TODO: figure with diagram of processing workflow -->
 </section>
 <section id="base-de-datos-postgis-6" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li>La BBDD se puebla a partir de scripts <strong>.sql</strong> creados con la herramienta PostGIS <strong>shp2pgsql</strong>.
-<ul>
-<li>como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)</li>
-</ul></li>
-</ul>
-<p>TODO: figure with diagram of processing workflow</p>
-</section>
-<section id="base-de-datos-postgis-7" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <div>
 <ul>
@@ -550,23 +591,19 @@
 <li class="fragment">Contiene 354 filas con información general de cada comuna del país.</li>
 <li class="fragment">Coordenadas de centroides de cada sector comunal (urbana, rural, aldea).</li>
 <li class="fragment">Niveles de zoom precalculados en base al área de cada sector, usados para centrar el mapa mostrado en la aplicación.</li>
-<li class="fragment">Columna <strong>geometry</strong> contiene perímetros de comunas (en formato binarias), usados para dibujar el contorno comunal mostrado en la aplicación.</li>
+<li class="fragment">Columna <strong>geometry</strong> contiene perímetros de comunas (en formato binario), usados para dibujar el contorno comunal mostrado en la aplicación.</li>
 </ul></li>
 </ul>
 </div>
 <p><img data-src="imagenes/postgis_table_comunas_2.png" style="width:100.0%"></p>
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- Tabla 1: **comunas**
+  - Ejemplo: comuna Concepción. 
+
+![](imagenes/ejemplo_geometry_comuna_pres_01_1.png){width="100%"} -->
 </section>
-<section id="base-de-datos-postgis-8" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li>Tabla 1: <strong>comunas</strong>
-<ul>
-<li>Ejemplo: comuna Concepción.</li>
-</ul></li>
-</ul>
-<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_01_1.png" style="width:100.0%"></p>
-</section>
-<section id="base-de-datos-postgis-9" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-7" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
 <li>Tabla 1: <strong>comunas</strong>
@@ -576,7 +613,7 @@
 </ul>
 <p><img data-src="imagenes/ejemplo_geometry_comuna_pres_01_2.png" style="width:100.0%"></p>
 </section>
-<section id="base-de-datos-postgis-10" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-8" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <div>
 <ul>
@@ -592,18 +629,15 @@
 </ul>
 </div>
 <p><img data-src="imagenes/postgis_table_perimeters_arc.png" style="width:100.0%"></p>
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- Tabla 2: **perimeters_arc**
+  - Ejemplo: comuna Concepción. 
+
+
+![](imagenes/ejemplo_geometry_comuna_pres_02_1.png){width="100%"} -->
 </section>
-<section id="base-de-datos-postgis-11" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li>Tabla 2: <strong>perimeters_arc</strong>
-<ul>
-<li>Ejemplo: comuna Concepción.</li>
-</ul></li>
-</ul>
-<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_02_1.png" style="width:100.0%"></p>
-</section>
-<section id="base-de-datos-postgis-12" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-9" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
 <li>Tabla 2: <strong>perimeters_arc</strong>
@@ -613,7 +647,7 @@
 </ul>
 <p><img data-src="imagenes/ejemplo_geometry_comuna_pres_02_2.png" style="width:100.0%"></p>
 </section>
-<section id="base-de-datos-postgis-13" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-10" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <div>
 <ul>
@@ -629,26 +663,50 @@
 </ul>
 </div>
 <p><img data-src="imagenes/postgis_table_perimeters_arc_ciclo.png" style="width:100.0%"></p>
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- Tabla 3: **perimeters_arc_ciclo**
+  - Ejemplo: comuna Concepción (461 ARCs). 
+
+![](imagenes/ejemplo_geometry_comuna_pres_03_1.png){width="100%"} -->
 </section>
-<section id="base-de-datos-postgis-14" class="slide level2 medium-par">
+<section id="base-de-datos-postgis-11" class="slide level2 medium-par">
 <h2>Base de Datos: PostGIS</h2>
 <ul>
 <li>Tabla 3: <strong>perimeters_arc_ciclo</strong>
 <ul>
-<li>Ejemplo: comuna Concepción.</li>
-</ul></li>
-</ul>
-<p><img data-src="imagenes/ejemplo_geometry_comuna_pres_03_1.png" style="width:100.0%"></p>
-</section>
-<section id="base-de-datos-postgis-15" class="slide level2 medium-par">
-<h2>Base de Datos: PostGIS</h2>
-<ul>
-<li>Tabla 3: <strong>perimeters_arc_ciclo</strong>
-<ul>
-<li>Ejemplo: comuna Concepción.</li>
+<li>Ejemplo: comuna Concepción (461 ARCs).</li>
 </ul></li>
 </ul>
 <p><img data-src="imagenes/ejemplo_geometry_comuna_pres_03_2.png" style="width:100.0%"></p>
+</section>
+<section id="base-de-datos-postgis-12" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<p><img data-src="imagenes/database_workflow_pres_01.png" style="width:70.0%"></p>
+</section>
+<section id="base-de-datos-postgis-13" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<p><img data-src="imagenes/database_workflow_pres_02.png" style="width:70.0%"></p>
+</section>
+<section id="base-de-datos-postgis-14" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<p><img data-src="imagenes/database_workflow_pres_03.png" style="width:70.0%"></p>
+</section>
+<section id="base-de-datos-postgis-15" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<p><img data-src="imagenes/database_workflow_pres_04.png" style="width:70.0%"></p>
+</section>
+<section id="base-de-datos-postgis-16" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<p><img data-src="imagenes/database_workflow_pres_05.png" style="width:70.0%"></p>
+</section>
+<section id="base-de-datos-postgis-17" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<p><img data-src="imagenes/database_workflow_pres_06.png" style="width:70.0%"></p>
+</section>
+<section id="base-de-datos-postgis-18" class="slide level2 medium-par">
+<h2>Base de Datos: PostGIS</h2>
+<p><img data-src="imagenes/database_workflow_pres_07.png" style="width:70.0%"></p>
 </section>
 <section id="flask-frontend" class="slide level2 medium-par">
 <h2>Flask + Frontend</h2>
@@ -687,12 +745,12 @@
 </section>
 <section id="gunicorn" class="slide level2 medium-par">
 <h2>Gunicorn</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="at">    </span><span class="fu">flask-censo-1</span><span class="kw">:</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="at">      </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> flask-censo-1</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask-censo</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="at">      </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./flask_app</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> gunicorn --workers 20 --bind 0.0.0.0:5000 app:app </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="at">    </span><span class="fu">flask-censo-1</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="at">      </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> flask-censo-1</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> flask-censo</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="at">      </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./flask_app</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> gunicorn --workers 20 --bind 0.0.0.0:5000 app:app </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div>
 <ul>
 <li class="fragment"><p>Uno de los desafíos era escalar la aplicación y uno de los elementos que ayuda con esto es Green Unicorn.</p></li>

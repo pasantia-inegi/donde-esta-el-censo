@@ -95,11 +95,51 @@ que pueden implicar cambios en la aplicación.
 
 ## Base de Datos: PostGIS {.medium-par}
 
-- TODO: imagen con ejemplo de MANZANAS, ARC
+::: incremental
+- Cada comuna se divide en 4 ciclos censales.
+  - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
+  - Veamos cómo se construye cada ciclo.
+:::
 
-- TODO: quizás unir con siguiente slide
 
-- Como lidiamos con geometrías geospaciales, necesitamos una base de datos optimizada para almacenar ese tipo de datos...
+
+## Base de Datos: PostGIS {.medium-par}
+
+- Cada comuna se divide en 4 ciclos censales.
+  - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
+  - Veamos cómo se construye cada ciclo.
+
+![](imagenes/ejemplo_arc_manzent_pres_01.png){width="100%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- Cada comuna se divide en 4 ciclos censales.
+  - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
+  - Veamos cómo se construye cada ciclo.
+
+![](imagenes/ejemplo_arc_manzent_pres_02.png){width="100%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- Cada comuna se divide en 4 ciclos censales.
+  - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
+  - Veamos cómo se construye cada ciclo.
+
+![](imagenes/ejemplo_arc_manzent_pres_03.png){width="100%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+- Cada comuna se divide en 4 ciclos censales.
+  - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
+  - Veamos cómo se construye cada ciclo.
+
+![](imagenes/ejemplo_arc_manzent_pres_04.png){width="100%"}
 
 
 
@@ -121,17 +161,17 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+<!-- ## Base de Datos: PostGIS {.medium-par}
 
 ::: incremental
 - La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
   - [https://postgis.net/docs/using_postgis_dbmanagement.html](https://postgis.net/docs/using_postgis_dbmanagement.html)
 
-:::
+::: -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+<!-- ## Base de Datos: PostGIS {.medium-par}
 
 - La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
 
@@ -161,18 +201,24 @@ cmd = f"shp2pgsql -s 4674 -a -g geometry -W LATIN1 -I {path_shp} public.comunas 
 res = subprocess.call(cmd, shell=True)
 ```
 
-:::
+::: -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+<!-- ## Base de Datos: PostGIS {.medium-par}
 
 - La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
   - Ejemplo de script **40_2_append_comunas.sql**:
 
-![](imagenes/postgis_query_insert_table_comunas.png){width="100%"}
+![](imagenes/postgis_query_insert_table_comunas.png){width="100%"} -->
 
 
+
+
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
+  - como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)
 
 
 ## Base de Datos: PostGIS {.medium-par}
@@ -180,13 +226,8 @@ res = subprocess.call(cmd, shell=True)
 - La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
   - como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)
 
+TODO: figure with diagram of processing workflow -->
 
-## Base de Datos: PostGIS {.medium-par}
-
-- La BBDD se puebla a partir de scripts **.sql** creados con la herramienta PostGIS **shp2pgsql**.
-  - como parte de un flujo que procesa los datos relevantes desde diferentes fuentes (planificación censal, geometrías comunales, cambios debido a la contingencia, etc)
-
-TODO: figure with diagram of processing workflow
 
 
 ## Base de Datos: PostGIS {.medium-par}
@@ -196,19 +237,19 @@ TODO: figure with diagram of processing workflow
   - Contiene 354 filas con información general de cada comuna del país.
   - Coordenadas de centroides de cada sector comunal (urbana, rural, aldea).
   - Niveles de zoom precalculados en base al área de cada sector, usados para centrar el mapa mostrado en la aplicación.
-  - Columna **geometry** contiene perímetros de comunas (en formato binarias), usados para dibujar el contorno comunal mostrado en la aplicación.
+  - Columna **geometry** contiene perímetros de comunas (en formato binario), usados para dibujar el contorno comunal mostrado en la aplicación.
 :::
 
 ![](imagenes/postgis_table_comunas_2.png){width="100%"}
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+<!-- ## Base de Datos: PostGIS {.medium-par}
 
 - Tabla 1: **comunas**
   - Ejemplo: comuna Concepción. 
 
-![](imagenes/ejemplo_geometry_comuna_pres_01_1.png){width="100%"}
+![](imagenes/ejemplo_geometry_comuna_pres_01_1.png){width="100%"} -->
 
 
 
@@ -235,13 +276,13 @@ TODO: figure with diagram of processing workflow
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+<!-- ## Base de Datos: PostGIS {.medium-par}
 
 - Tabla 2: **perimeters_arc**
   - Ejemplo: comuna Concepción. 
 
 
-![](imagenes/ejemplo_geometry_comuna_pres_02_1.png){width="100%"}
+![](imagenes/ejemplo_geometry_comuna_pres_02_1.png){width="100%"} -->
 
 
 
@@ -268,21 +309,63 @@ TODO: figure with diagram of processing workflow
 
 
 
+<!-- ## Base de Datos: PostGIS {.medium-par}
+
+- Tabla 3: **perimeters_arc_ciclo**
+  - Ejemplo: comuna Concepción (461 ARCs). 
+
+![](imagenes/ejemplo_geometry_comuna_pres_03_1.png){width="100%"} -->
+
+
+
 ## Base de Datos: PostGIS {.medium-par}
 
 - Tabla 3: **perimeters_arc_ciclo**
-  - Ejemplo: comuna Concepción. 
-
-![](imagenes/ejemplo_geometry_comuna_pres_03_1.png){width="100%"}
-
-
-
-## Base de Datos: PostGIS {.medium-par}
-
-- Tabla 3: **perimeters_arc_ciclo**
-  - Ejemplo: comuna Concepción. 
+  - Ejemplo: comuna Concepción (461 ARCs). 
 
 ![](imagenes/ejemplo_geometry_comuna_pres_03_2.png){width="100%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+![](imagenes/database_workflow_pres_01.png){width="70%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+![](imagenes/database_workflow_pres_02.png){width="70%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+![](imagenes/database_workflow_pres_03.png){width="70%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+![](imagenes/database_workflow_pres_04.png){width="70%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+![](imagenes/database_workflow_pres_05.png){width="70%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+![](imagenes/database_workflow_pres_06.png){width="70%"}
+
+
+
+## Base de Datos: PostGIS {.medium-par}
+
+![](imagenes/database_workflow_pres_07.png){width="70%"}
 
 
 
