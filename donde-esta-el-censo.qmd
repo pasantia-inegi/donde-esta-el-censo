@@ -82,7 +82,7 @@ censados para la comuna seleccionada por el usuario.
   - Tener altas medidas de seguridad.
 - Además, esta debe poder adaptarse: por su naturaleza, el censo está sujeto a contingencias
 que pueden implicar cambios en la aplicación.
-- Iremos explorando cómo los solucionamos durante la presentación
+- Iremos explorando cómo los solucionamos durante la presentación.
 
 :::  
 
@@ -93,7 +93,7 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Necesidad {.medium-par}
 
 ::: incremental
 - Cada comuna se divide en 4 ciclos censales.
@@ -103,7 +103,7 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Necesidad {.medium-par}
 
 - Cada comuna se divide en 4 ciclos censales.
   - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
@@ -113,7 +113,7 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Necesidad {.medium-par}
 
 - Cada comuna se divide en 4 ciclos censales.
   - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
@@ -123,7 +123,7 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Necesidad {.medium-par}
 
 - Cada comuna se divide en 4 ciclos censales.
   - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
@@ -133,7 +133,7 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Necesidad {.medium-par}
 
 - Cada comuna se divide en 4 ciclos censales.
   - Y cada ciclo está compuesto por unidades geográficas más pequeñas: ARC y Manzent.
@@ -143,22 +143,17 @@ que pueden implicar cambios en la aplicación.
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Necesidad {.medium-par}
 
 ::: incremental
-- Extiende las capacidades de una base de datos relacional PostgreSQL, agregando soporte para almacenamiento, indexado y consulta a datos geospaciales.
-
-- Principales características:
+- Dada la variedad de información geográfica de los datos, optamos por utilizar una BBDD geoespacial PostGIS (extensión de PostgreSQL).
+- Principales características de PostGIS:
   - Almacenamiento: puntos, líneas, polígonos y multi-geometrías, en 2D y 3D.
   - Indexado: permite rápida consulta y respuesta.
   - Funciones y Procesamiento geométrico: medición de distancias y áreas, intersecciones, buffers, simplificación, geocoding, etc.
-
 - Para optimizar las consultas a la BBDD, creamos tres tablas que contienen diferentes datos geospaciales preprocesados con propósitos definidos en función de la operación de la aplicación.
-
-- Esto permite que la BBDD sea estática: al ser consultada por la aplicación sólo retorna lo necesario, pero no realiza procesamientos demandantes.
-
+  - Esto permite que la BBDD sea estática: al ser consultada por la aplicación sólo retorna lo necesario, pero no realiza procesamientos demandantes.
 :::
-
 
 
 <!-- ## Base de Datos: PostGIS {.medium-par}
@@ -230,7 +225,7 @@ TODO: figure with diagram of processing workflow -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Estructura {.medium-par}
 
 ::: incremental
 - Tabla 1: **comunas**
@@ -253,7 +248,7 @@ TODO: figure with diagram of processing workflow -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Estructura {.medium-par}
 
 - Tabla 1: **comunas**
   - Ejemplo: comuna Concepción. 
@@ -262,14 +257,14 @@ TODO: figure with diagram of processing workflow -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Estructura {.medium-par}
 
 ::: incremental
 - Tabla 2: **perimeters_arc**
   - Contiene 44,835 filas, con múltiples filas por cada comuna. 
-  - Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando por ARC y ciclo censal.
-  - Esta es nuestra **Optimización I**, que permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe plotear. 
-    - Todo esto alineado a la planificación del censo, que es a nivel de ciclo.
+  - Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando Manzents por ARC y ciclo censal.
+  - **Optimización I**: permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe plotear. 
+    - Alineada con la planificación del censo, que es a nivel de ciclo.
 :::
 
 ![](imagenes/postgis_table_perimeters_arc.png){width="100%"}
@@ -286,7 +281,7 @@ TODO: figure with diagram of processing workflow -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Estructura {.medium-par}
 
 - Tabla 2: **perimeters_arc**
   - Ejemplo: comuna Concepción. 
@@ -295,14 +290,14 @@ TODO: figure with diagram of processing workflow -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Estructura {.medium-par}
 
 ::: incremental
 - Tabla 3: **perimeters_arc_ciclo**
   - Contiene 136 filas, una fila por ciclo y por comuna, es decir, cuatro filas por cada comuna. 
   - Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando todos los ARCs de una comuna para cada ciclo censal.
-  - Esta es nuestra **Optimización II**, que se aplica a comunas con un gran número de ARCs (>300). Esto permite reducir aún más la latencia de la aplicación al consultar la BBDD y plotear las geometrías. 
-    - Nació como medida de contención ante la alta demanda de la aplicación.
+  - **Optimización II**: aplicada a comunas con un gran número de ARCs (>300). Esto permite reducir aún más la latencia de la aplicación al consultar la BBDD y plotear las geometrías. 
+    - Nació como medida de contención ante la alta demanda que ha tenido la aplicación.
 :::
 
 ![](imagenes/postgis_table_perimeters_arc_ciclo.png){width="100%"}
@@ -318,7 +313,7 @@ TODO: figure with diagram of processing workflow -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Estructura {.medium-par}
 
 - Tabla 3: **perimeters_arc_ciclo**
   - Ejemplo: comuna Concepción (461 ARCs). 
@@ -327,45 +322,25 @@ TODO: figure with diagram of processing workflow -->
 
 
 
-## Base de Datos: PostGIS {.medium-par}
+## Base de Datos: PostGIS | Levantamiento {.medium-par}
 
-![](imagenes/database_workflow_pres_01.png){width="70%"}
+::: {.r-stack fragment-index=2}
 
+![](imagenes/database_workflow_pres_01.png){.fragment .fade-in-then-out}
 
+![](imagenes/database_workflow_pres_02.png){.fragment .fade-in-then-out}
 
-## Base de Datos: PostGIS {.medium-par}
+![](imagenes/database_workflow_pres_03.png){.fragment .fade-in-then-out}
 
-![](imagenes/database_workflow_pres_02.png){width="70%"}
+![](imagenes/database_workflow_pres_04.png){.fragment .fade-in-then-out}
 
+![](imagenes/database_workflow_pres_05.png){.fragment .fade-in-then-out}
 
+![](imagenes/database_workflow_pres_06.png){.fragment .fade-in-then-out}
 
-## Base de Datos: PostGIS {.medium-par}
+![](imagenes/database_workflow_pres_07.png){.fragment .fade-in-then-out}
 
-![](imagenes/database_workflow_pres_03.png){width="70%"}
-
-
-
-## Base de Datos: PostGIS {.medium-par}
-
-![](imagenes/database_workflow_pres_04.png){width="70%"}
-
-
-
-## Base de Datos: PostGIS {.medium-par}
-
-![](imagenes/database_workflow_pres_05.png){width="70%"}
-
-
-
-## Base de Datos: PostGIS {.medium-par}
-
-![](imagenes/database_workflow_pres_06.png){width="70%"}
-
-
-
-## Base de Datos: PostGIS {.medium-par}
-
-![](imagenes/database_workflow_pres_07.png){width="70%"}
+:::
 
 
 
