@@ -89,7 +89,7 @@ que pueden implicar cambios en la aplicación.
 
 ## Estructura de la aplicación
 
-![](imagenes/diagrama.PNG)
+![](imagenes/diagrama_app.png)
 
 
 
