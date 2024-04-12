@@ -151,8 +151,8 @@ que pueden implicar cambios en la aplicación.
   - Almacenamiento: puntos, líneas, polígonos y multi-geometrías, en 2D y 3D.
   - Indexado: permite rápida consulta y respuesta.
   - Funciones y Procesamiento geométrico: medición de distancias y áreas, intersecciones, buffers, simplificación, geocoding, etc.
-- Para optimizar las consultas a la BBDD, creamos tres tablas que contienen diferentes datos geospaciales preprocesados con propósitos definidos en función de la operación de la aplicación.
-  - Esto permite que la BBDD sea estática: al ser consultada por la aplicación sólo retorna lo necesario, pero no realiza procesamientos demandantes.
+- Para optimizar las consultas a la BBDD, creamos tres tablas que contienen datos geospaciales pre-procesados en función de la operación de la aplicación.
+  - Esto permite que la BBDD sólo retorne la información necesaria, pero sin realizar procesamientos demandantes.
 :::
 
 
@@ -232,7 +232,7 @@ TODO: figure with diagram of processing workflow -->
   - Contiene 354 filas con información general de cada comuna del país.
   - Coordenadas de centroides de cada sector comunal (urbana, rural, aldea).
   - Niveles de zoom precalculados en base al área de cada sector, usados para centrar el mapa mostrado en la aplicación.
-  - Columna **geometry** contiene perímetros de comunas (en formato binario), usados para dibujar el contorno comunal mostrado en la aplicación.
+  - Columna con geometría contiene perímetros de comunas (en formato binario), usados para dibujar el contorno comunal mostrado en la aplicación.
 :::
 
 ![](imagenes/postgis_table_comunas_2.png){width="100%"}
@@ -262,8 +262,8 @@ TODO: figure with diagram of processing workflow -->
 ::: incremental
 - Tabla 2: **perimeters_arc**
   - Contiene 44,835 filas, con múltiples filas por cada comuna. 
-  - Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando Manzents por ARC y ciclo censal.
-  - **Optimización I**: permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe plotear. 
+  - Cada fila contiene una geometría que incluye los polígonos obtenidos agrupando Manzents por ARC y ciclo censal.
+  - **Optimización I**: permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe dibujar. 
     - Alineada con la planificación del censo, que es a nivel de ciclo.
 :::
 
@@ -295,9 +295,9 @@ TODO: figure with diagram of processing workflow -->
 ::: incremental
 - Tabla 3: **perimeters_arc_ciclo**
   - Contiene 136 filas, una fila por ciclo y por comuna, es decir, cuatro filas por cada comuna. 
-  - Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando todos los ARCs de una comuna para cada ciclo censal.
-  - **Optimización II**: aplicada a comunas con un gran número de ARCs (>300). Esto permite reducir aún más la latencia de la aplicación al consultar la BBDD y plotear las geometrías. 
-    - Nació como medida de contención ante la alta demanda que ha tenido la aplicación.
+  - Cada fila contiene una geometría que incluye los polígonos obtenidos agrupando todos los ARCs de una comuna para cada ciclo censal.
+  - **Optimización II**: aplicada a comunas con un gran número de ARCs (>300). Permite reducir aún más la latencia de la aplicación al consultar la BBDD y dibujar las geometrías. 
+    - Nació como medida de contención ante la alta demanda de usuarios.
 :::
 
 ![](imagenes/postgis_table_perimeters_arc_ciclo.png){width="100%"}

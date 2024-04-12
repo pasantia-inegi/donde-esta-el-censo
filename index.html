@@ -518,9 +518,9 @@
 <li class="fragment">Indexado: permite rápida consulta y respuesta.</li>
 <li class="fragment">Funciones y Procesamiento geométrico: medición de distancias y áreas, intersecciones, buffers, simplificación, geocoding, etc.</li>
 </ul></li>
-<li class="fragment">Para optimizar las consultas a la BBDD, creamos tres tablas que contienen diferentes datos geospaciales preprocesados con propósitos definidos en función de la operación de la aplicación.
+<li class="fragment">Para optimizar las consultas a la BBDD, creamos tres tablas que contienen datos geospaciales pre-procesados en función de la operación de la aplicación.
 <ul>
-<li class="fragment">Esto permite que la BBDD sea estática: al ser consultada por la aplicación sólo retorna lo necesario, pero no realiza procesamientos demandantes.</li>
+<li class="fragment">Esto permite que la BBDD sólo retorne la información necesaria, pero sin realizar procesamientos demandantes.</li>
 </ul></li>
 </ul>
 </div>
@@ -593,7 +593,7 @@ TODO: figure with diagram of processing workflow -->
 <li class="fragment">Contiene 354 filas con información general de cada comuna del país.</li>
 <li class="fragment">Coordenadas de centroides de cada sector comunal (urbana, rural, aldea).</li>
 <li class="fragment">Niveles de zoom precalculados en base al área de cada sector, usados para centrar el mapa mostrado en la aplicación.</li>
-<li class="fragment">Columna <strong>geometry</strong> contiene perímetros de comunas (en formato binario), usados para dibujar el contorno comunal mostrado en la aplicación.</li>
+<li class="fragment">Columna con geometría contiene perímetros de comunas (en formato binario), usados para dibujar el contorno comunal mostrado en la aplicación.</li>
 </ul></li>
 </ul>
 </div>
@@ -622,8 +622,8 @@ TODO: figure with diagram of processing workflow -->
 <li class="fragment">Tabla 2: <strong>perimeters_arc</strong>
 <ul>
 <li class="fragment">Contiene 44,835 filas, con múltiples filas por cada comuna.</li>
-<li class="fragment">Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando Manzents por ARC y ciclo censal.</li>
-<li class="fragment"><strong>Optimización I</strong>: permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe plotear.
+<li class="fragment">Cada fila contiene una geometría que incluye los polígonos obtenidos agrupando Manzents por ARC y ciclo censal.</li>
+<li class="fragment"><strong>Optimización I</strong>: permite hacer más ligeras las consultas a la BBDD y reducir la cantidad de geometrías que la aplicación debe dibujar.
 <ul>
 <li class="fragment">Alineada con la planificación del censo, que es a nivel de ciclo.</li>
 </ul></li>
@@ -656,10 +656,10 @@ TODO: figure with diagram of processing workflow -->
 <li class="fragment">Tabla 3: <strong>perimeters_arc_ciclo</strong>
 <ul>
 <li class="fragment">Contiene 136 filas, una fila por ciclo y por comuna, es decir, cuatro filas por cada comuna.</li>
-<li class="fragment">Cada fila contiene una geometría que incluye los multi-polígonos obtenidos agrupando todos los ARCs de una comuna para cada ciclo censal.</li>
-<li class="fragment"><strong>Optimización II</strong>: aplicada a comunas con un gran número de ARCs (&gt;300). Esto permite reducir aún más la latencia de la aplicación al consultar la BBDD y plotear las geometrías.
+<li class="fragment">Cada fila contiene una geometría que incluye los polígonos obtenidos agrupando todos los ARCs de una comuna para cada ciclo censal.</li>
+<li class="fragment"><strong>Optimización II</strong>: aplicada a comunas con un gran número de ARCs (&gt;300). Permite reducir aún más la latencia de la aplicación al consultar la BBDD y dibujar las geometrías.
 <ul>
-<li class="fragment">Nació como medida de contención ante la alta demanda que ha tenido la aplicación.</li>
+<li class="fragment">Nació como medida de contención ante la alta demanda de usuarios.</li>
 </ul></li>
 </ul></li>
 </ul>
