@@ -349,7 +349,7 @@ TODO: figure with diagram of processing workflow -->
 ![](imagenes/app_code.png){width=60% .float-right}
 
 ::: incremental
-- Como vimos anteriormente, Flask es un _microframework_ para desarrollo web de backend, 
+- Flask es un _microframework_ para desarrollo web de backend, 
 famoso por ser sencillo, liviano y flexible. Es la base de otros frameworks más complejos como FastAPI.
 
 - Flask funciona como backend de la aplicación, comunicándose con el frontend y manejando
@@ -374,7 +374,7 @@ las lógicas de la aplicación: ploteo, renderizado programático de valores esp
 ::: {.fragment fragment-index=1 }
 - Esta aplicación requirió una comunicación fluida con el frontend. En particular, entre Python
 y Javascript, lo que se realizó a través de fetch requests, una herramienta relativamente
-reciente nativa de Javascript.
+reciente nativa de Javascript, que utiliza el protocolo AJAX.
   
   - Esto permite que, por ejemplo, Python genere los datos del gráfico, pero Javascript se encargue del
   ploteo, poniendo la carga sobre los usuarios y no sobre nuestros servidores.
@@ -422,6 +422,7 @@ manejan las requests al servidor en paralelo.
 
 ![](imagenes/nginx.png)
 
+::: incremental
 - Nginx actúa como parte de nuestra solución para la escalabilidad y la seguridad de la información.
 
 - Actúa como proxy reverso y web server:
@@ -431,6 +432,8 @@ manejan las requests al servidor en paralelo.
   la respuesta.
   - Maneja el protocolo HTTP, además de servir los archivos estáticos de la página web.
   - El balance de la carga es externalizado a un servicio centralizado del INE.
+  
+:::
   
 ## Nginx | Seguridad de la información {.medium-par}
 
@@ -506,6 +509,8 @@ fueron presentándose. Entre ellos:
 
 ::: notes
 
+- Inyección de scripts maliciosos en la web/app de una persona.
+- CSRF: Hago al usuario realizar acciones que no quería (cambio contraseña, depósito dinero, etc)
 - Cookie httponly: no se puede acceder a cookie desde javascript
 - cookie secure: cookie solo será enviada desde requests https
 - Cookie samesimte: Evita ataques CSRF (Cross-site request forgery)

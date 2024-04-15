@@ -699,7 +699,7 @@ TODO: figure with diagram of processing workflow -->
 <p><img data-src="imagenes/app_code.png" class="float-right" style="width:60.0%"></p>
 <div>
 <ul>
-<li class="fragment"><p>Como vimos anteriormente, Flask es un <em>microframework</em> para desarrollo web de backend, famoso por ser sencillo, liviano y flexible. Es la base de otros frameworks más complejos como FastAPI.</p></li>
+<li class="fragment"><p>Flask es un <em>microframework</em> para desarrollo web de backend, famoso por ser sencillo, liviano y flexible. Es la base de otros frameworks más complejos como FastAPI.</p></li>
 <li class="fragment"><p>Flask funciona como backend de la aplicación, comunicándose con el frontend y manejando las lógicas de la aplicación: ploteo, renderizado programático de valores específicos, formulario.</p></li>
 <li class="fragment"><p>Además, como herramienta de visualización se seleccionó Plotly, al ser Open Source.</p>
 <ul>
@@ -717,7 +717,7 @@ TODO: figure with diagram of processing workflow -->
 </div>
 <div class="fragment" data-fragment-index="1">
 <ul>
-<li><p>Esta aplicación requirió una comunicación fluida con el frontend. En particular, entre Python y Javascript, lo que se realizó a través de fetch requests, una herramienta relativamente reciente nativa de Javascript.</p>
+<li><p>Esta aplicación requirió una comunicación fluida con el frontend. En particular, entre Python y Javascript, lo que se realizó a través de fetch requests, una herramienta relativamente reciente nativa de Javascript, que utiliza el protocolo AJAX.</p>
 <ul>
 <li>Esto permite que, por ejemplo, Python genere los datos del gráfico, pero Javascript se encargue del ploteo, poniendo la carga sobre los usuarios y no sobre nuestros servidores.</li>
 </ul></li>
@@ -753,15 +753,17 @@ TODO: figure with diagram of processing workflow -->
 <section id="nginx" class="slide level2 medium-par">
 <h2>Nginx</h2>
 <p><img data-src="imagenes/nginx.png"></p>
+<div>
 <ul>
-<li><p>Nginx actúa como parte de nuestra solución para la escalabilidad y la seguridad de la información.</p></li>
-<li><p>Actúa como proxy reverso y web server:</p>
+<li class="fragment"><p>Nginx actúa como parte de nuestra solución para la escalabilidad y la seguridad de la información.</p></li>
+<li class="fragment"><p>Actúa como proxy reverso y web server:</p>
 <ul>
-<li>Acepta <em>requests</em> de clientes y las distribuye al servidor backend (gunicorn), pasándole medidas de seguridad agregadas en su archivo de configuración. Luego, entrega la respuesta desde el servidor backend al cliente, haciendo parecer que el servidor proxy mismo entregó la respuesta.</li>
-<li>Maneja el protocolo HTTP, además de servir los archivos estáticos de la página web.</li>
-<li>El balance de la carga es externalizado a un servicio centralizado del INE.</li>
+<li class="fragment">Acepta <em>requests</em> de clientes y las distribuye al servidor backend (gunicorn), pasándole medidas de seguridad agregadas en su archivo de configuración. Luego, entrega la respuesta desde el servidor backend al cliente, haciendo parecer que el servidor proxy mismo entregó la respuesta.</li>
+<li class="fragment">Maneja el protocolo HTTP, además de servir los archivos estáticos de la página web.</li>
+<li class="fragment">El balance de la carga es externalizado a un servicio centralizado del INE.</li>
 </ul></li>
 </ul>
+</div>
 </section>
 <section id="nginx-seguridad-de-la-información" class="slide level2 medium-par">
 <h2>Nginx | Seguridad de la información</h2>
@@ -817,6 +819,8 @@ TODO: figure with diagram of processing workflow -->
 </div>
 <aside class="notes">
 <ul>
+<li>Inyección de scripts maliciosos en la web/app de una persona.</li>
+<li>CSRF: Hago al usuario realizar acciones que no quería (cambio contraseña, depósito dinero, etc)</li>
 <li>Cookie httponly: no se puede acceder a cookie desde javascript</li>
 <li>cookie secure: cookie solo será enviada desde requests https</li>
 <li>Cookie samesimte: Evita ataques CSRF (Cross-site request forgery)</li>
@@ -841,6 +845,17 @@ TODO: figure with diagram of processing workflow -->
 <li>Originalmente, fue utilizada una sola instancia de flask-gunicorn, sin embargo, esto resultó no ser del todo eficiente, por lo que finalmente se levantan 3 instancias, que reciben las requests en la medida que van llegando desde <code>nginx</code> a través de un sistema de reparto <em>round robin</em>.</li>
 <li>Fuera de esto, la implementación es relativamente sencilla: se montan volúmenes, se utilizan variablees de ambiente y se aprovechan imágenes pre-existentes.</li>
 </ul>
+</section>
+<section id="conclusiones-estratégicas" class="slide level2">
+<h2>Conclusiones estratégicas</h2>
+<p>Al ser nuestra primera experiencia con un proyecto de este tamaño y con estas características, hubo múltiples aprendizajes estratégicos para el equipo:</p>
+<div>
+<ul>
+<li class="fragment"><p>Generar un gran conocimiento en frontend puede no ser beneficioso para el equipo, considerando que funciona en una lógica distinta, lo que permite externalizar esta parte del flujo. En particular, considerando que existen habilidades instaladas en el INE que permiten generar cooperación institucional, lo que resulta más eficiente</p></li>
+<li class="fragment"><p>Más aún, el desarrollo de grandes de aplicaciones parece no ser el camino a seguir, debido al alto costo extra que supone armar un proyecto que dé cara al público, tanto en medidas de seguridad como en el trabajo dedicado a la estética de este.</p></li>
+<li class="fragment"><p>Fuera de esto, tener un conocimiento básico de las tecnologías que suponen un proyecto así, siempre es beneficioso, pues, al menos, permite conversar en el mismo nivel con quien se encargue de esto, a futuro.</p></li>
+</ul>
+</div>
 </section>
 <section id="conclusiones" class="slide level2 medium-par">
 <h2>Conclusiones</h2>
